@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+    rekognize
+
+    Simple lambda function which sends an image to AWS Rekognition based on events from S3 bucket uploads
+    
+Globals:
+    Function:
+        Timeout: 3
+
+Resources:
+    RekognizeFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: rekognize/build/
+            Handler: app.rekognize
+            Runtime: python3.6
+            Environment:
+                Variables:
+                    PARAM1: VALUE
+            Events:
+                Rekognize:
+                    Type: Api
+                    Properties:
+                        Path: /hello
+                        Method: get
+
+Outputs:
+    RekognizeApi:
+      Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+      Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+
+    RekognizeFunction:
+      Description: "Hello World Lambda Function ARN"
+      Value: !GetAtt RekognizeFunction.Arn
+
+    RekognizeFunctionIamRole:
+      Description: "Implicit IAM Role created for Hello World function"
+      Value: !GetAtt HelloWorldFunctionRole.Arn
