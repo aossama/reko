@@ -1,7 +1,7 @@
 import boto3
 import datetime
 
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, render_template
 
 
 app = Flask(__name__)
@@ -9,12 +9,17 @@ app = Flask(__name__)
 s3_client = boto3.client('s3')
 
 
+@app.route("/", methods=["GET"])
+def upload_get():
+    return render_template('upload.html')
+
+
 @app.route("/", methods=["POST"])
-def upload():
+def upload_post():
     if "user_file" not in request.files:
         return "No user_file key in request.files"
 
-    file = request.files["user_file"]
+    file = request.files["image"]
 
     if file.filename == "":
         return "Please select a file"
