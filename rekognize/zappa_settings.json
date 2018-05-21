@@ -1,0 +1,27 @@
+{
+    "dev": {
+        "app_function": "app.rekognize",
+        "aws_region": "eu-west-1",
+        "profile_name": "default",
+        "project_name": "rekognize",
+        "runtime": "python3.6",
+        "s3_bucket": "zappa-9z8i3kgtr"
+        "events": [{
+            "function": "app.rekognize",
+            "event_source": {
+                "arn":  "arn:aws:s3:::images.luji.io",
+                "events": [
+                    "s3:ObjectCreated:*"
+                ]
+            }
+        }],
+        "extra_permissions": [{
+            "Effect": "Allow",
+            "Action": [
+                "rekognition:*",
+                "dynamodb:*"
+            ],
+            "Resource": "*"
+        }]
+    }
+}
